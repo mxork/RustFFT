@@ -13,19 +13,20 @@ categories = ["algorithms", "compression", "multimedia::encoding", "science"]
 license = "MIT OR Apache-2.0"
 
 [features]
-default = ["avx", "sse", "neon"]
+default = ["avx", "sse", "neon", "portable_simd"]
 
-# On x86_64, the "avx" feature enables compilation of AVX-acclerated code. 
-# Similarly, the "sse" feature enables SSE-accelerated code. 
+# On x86_64, the "avx" feature enables compilation of AVX-acclerated code.
+# Similarly, the "sse" feature enables SSE-accelerated code.
 # Enabling these improves performance if the client CPU supports AVX or SSE, while disabling them reduces compile time and binary size.
 # If both are enabled, RustFFT will use AVX if the CPU supports it. If not, it will check for SSE4.1.
-# If neither instruction set is available, it will fall back to the scalar code.  
+# If neither instruction set is available, it will fall back to the scalar code.
 # On every other platform, these features do nothing, and RustFFT will behave like they are not set.
 #
 # On AArch64, the "neon" feature enables compilation of Neon-accelerated code.
 avx = []
 sse = []
 neon = []
+portable_simd = []
 
 
 [dependencies]
@@ -35,6 +36,7 @@ num-integer = "^0.1.40"
 strength_reduce = "0.2.4"
 transpose = "0.2"
 primal-check = "0.3.3"
+trace = "*"
 
 [dev-dependencies]
 rand = "0.8"

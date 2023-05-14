@@ -1,4 +1,9 @@
 #![cfg_attr(all(feature = "bench", test), feature(test))]
+// :todo I dunno how do this
+// #![cfg_attr(portable_simd, feature(portable_simd))]
+// #![cfg_attr(portable_simd, feature(platform_intrinsics))]
+#![feature(portable_simd)]
+#![feature(platform_intrinsics)]
 
 //! RustFFT is a high-performance FFT library written in pure Rust.
 //!
@@ -326,6 +331,12 @@ pub use self::avx::avx_planner::FftPlannerAvx;
 // Algorithms implemented to use SSE4.1 instructions. Only compiled on x86_64, and only compiled if the "sse" feature flag is set.
 #[cfg(all(target_arch = "x86_64", feature = "sse"))]
 mod sse;
+
+#[cfg(all(feature = "portable_simd"))]
+mod simd;
+
+#[cfg(all(feature = "portable_simd"))]
+pub use self::simd::neon_planner::FftPlannerNeon as FftPlannerSimd;
 
 // If we're not on x86_64, or if the "sse" feature was disabled, keep a stub implementation around that has the same API, but does nothing
 // That way, users can write code using the SSE planner and compile it on any platform
