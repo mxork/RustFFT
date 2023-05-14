@@ -65,28 +65,28 @@ pub struct FftPlanner<T: FftNum> {
 impl<T: FftNum> FftPlanner<T> {
     /// Creates a new `FftPlanner` instance.
     pub fn new() -> Self {
-        if let Ok(avx_planner) = FftPlannerAvx::new() {
-            Self {
-                chosen_planner: ChosenFftPlanner::Avx(avx_planner),
-            }
-        } else if let Ok(sse_planner) = FftPlannerSse::new() {
-            Self {
-                chosen_planner: ChosenFftPlanner::Sse(sse_planner),
-            }
-        } else if let Ok(neon_planner) = FftPlannerNeon::new() {
-            Self {
-                chosen_planner: ChosenFftPlanner::Neon(neon_planner),
-            }
-        } else if let Ok(simd_planner) = FftPlannerSimd::new() {
-            dbg!("using simd_planner");
-            Self {
-                chosen_planner: ChosenFftPlanner::Simd(simd_planner),
-            }
-        } else {
-            Self {
-                chosen_planner: ChosenFftPlanner::Scalar(FftPlannerScalar::new()),
-            }
-        }
+        dbg!("using simd_planner");
+        return Self {
+            chosen_planner: ChosenFftPlanner::Simd(FftPlannerSimd::new().expect("bad simd planner")),
+        };
+        // if let Ok(avx_planner) = FftPlannerAvx::new() {
+        //     Self {
+        //         chosen_planner: ChosenFftPlanner::Avx(avx_planner),
+        //     }
+        // } else if let Ok(sse_planner) = FftPlannerSse::new() {
+        //     Self {
+        //         chosen_planner: ChosenFftPlanner::Sse(sse_planner),
+        //     }
+        // } else if let Ok(neon_planner) = FftPlannerNeon::new() {
+        //     Self {
+        //         chosen_planner: ChosenFftPlanner::Neon(neon_planner),
+        //     }
+        // } else if let Ok(simd_planner) = FftPlannerSimd::new() {
+        // } else {
+        //     Self {
+        //         chosen_planner: ChosenFftPlanner::Scalar(FftPlannerScalar::new()),
+        //     }
+        // }
     }
 
     /// Returns a `Fft` instance which computes FFTs of size `len`.
