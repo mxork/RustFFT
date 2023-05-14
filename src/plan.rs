@@ -65,6 +65,9 @@ pub struct FftPlanner<T: FftNum> {
 impl<T: FftNum> FftPlanner<T> {
     /// Creates a new `FftPlanner` instance.
     pub fn new() -> Self {
+        return Self {
+            chosen_planner: ChosenFftPlanner::Scalar(FftPlannerScalar::new()),
+        };
         dbg!("using simd_planner");
         return Self {
             chosen_planner: ChosenFftPlanner::Simd(FftPlannerSimd::new().expect("bad simd planner")),
